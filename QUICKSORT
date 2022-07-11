@@ -1,0 +1,62 @@
+#include <iostream>
+#include<vector>
+using namespace std;
+template <typename T>
+void imprimir(T lista[], int tam){
+	for (int i=0;i<tam;i++){
+	cout<<lista[i]<<" ";
+	}
+	cout<<endl;
+}
+template <typename T>
+		bool descendente(T a, T b){
+	return a>b;
+}
+template <typename T>
+	bool ascendente(T a, T b){
+	return a<=b;
+}
+
+template <typename T>
+void intercambiar(T *a,T *b){
+	T t=*a;
+	*a=*b;
+	*b=t;
+}
+template <typename T>
+int Partition(T lista[],int start, int end,bool (*funcion)(T,T)){
+	T piloto=lista[end];	
+	int i=(start-1);
+	for (int j=start;j<=end-1;j++){
+		if (funcion(lista[j],piloto)){
+			i++;
+			intercambiar(&lista[i],&lista[j]);
+		}
+	}
+	intercambiar(&lista[i+1],&lista[end]);
+	return (i+1);
+}
+template <typename T>
+void quickSort(T lista[],int start, int end,bool (*funcion)(T,T)){
+	if (start<end){
+		int part=Partition(lista,start,end,funcion);
+			quickSort(lista,start,part-1,funcion);
+			quickSort(lista,part+1,end,funcion);
+	}
+}
+
+int main(int argc, char *argv[]) {
+	int arr[] = { 1 , 10 , 11 , 9 , 14 , 3 , 2 , 20 , 19, 43, 57, 3, 2 };
+	int n = sizeof(arr)/sizeof(int);
+	cout<<"Inicial: "<<endl;
+	imprimir(arr,n);
+	cout<<"Ordenado descendente: "<<endl;
+	quickSort(arr,0,n-1,descendente);
+	imprimir(arr,n);
+	cout<<"Ordenado ascendente: "<<endl;
+	quickSort(arr,0,n-1,ascendente);
+	imprimir(arr,n);
+	system("pause");
+	return 0;
+}
+
