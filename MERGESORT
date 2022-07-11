@@ -1,0 +1,83 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+template<typename T>
+void Merge(T arr[], int start, int end)
+{
+    int z, x, y, mid;
+    vector<T> temp(end -start + 1);
+    mid = (start + end) / 2;
+    z = 0;
+    x = start;
+    y = mid + 1;
+    while (x <= mid && y <= end){
+        if (arr[x] < arr[y]) {
+            temp[z] = arr[x];
+            ++x, ++z;
+        }
+        else{
+            temp[z] = arr[y];
+            ++y, ++z;
+        }
+    }
+    while (x <= mid){
+        temp[z] = arr[x];
+        ++x, ++z;
+    }
+    while (y <= end){
+        temp[z] = arr[y];
+        ++y, ++z;
+    }
+    for (int i = start; i <= end; ++i){
+        arr[i] = temp[i - start];
+    }
+
+}
+template<typename T>
+void MergeSort(T arr[], int start, int end, bool (*func)(T,T))
+{
+    if (start < end)
+    {
+        int mid = (start + end) / 2;
+        void (*mismo)(T[],int,int, bool (*func)(T,T));
+		void (*base)(T[],int,int,int,bool (*func)(T,T));
+		mismo=&MergeSort;
+		base =&Merge;
+		(*mismo)(arr,start,mid,func);
+		(*mismo)(arr,mid+1,end,func);
+		(*base)(arr,start,mid,end,func);
+    }
+
+}
+template <typename T>
+bool descendente(T a, T b){
+	return a>b;
+}
+template <typename T>
+	bool ascendente(T a, T b){
+	return a<=b;
+}
+
+template<typename T>
+void PrintArray(T arr[], int n)
+{
+    for (int i = 0; i < n; ++i)
+        cout << arr[i] << " ";
+    cout << "\n\n";
+}
+
+int main()
+{
+
+    int arr[] = { 1, 10, 10, 90, 32, 100, 1, 11, 9, 14, 3, 2, 20, 19 };
+    int n = sizeof(arr) / sizeof(int);
+    cout << "Inicial: " << endl;
+    PrintArray(arr, n);
+    cout << "Ordenado ascendente: " << endl;
+    MergeSort(arr, 0, n - 1,ascendente);
+    PrintArray(arr, n);
+    cout << "Ordenado descendente: " << endl;
+    MergeSort(arr, 0, n - 1,descendente);
+    PrintArray(arr, n);
+
+}
